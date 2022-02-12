@@ -9,4 +9,9 @@ from scipy import ndimage
 def sigmoid(z):
     return 1/(1+np.exp(-z))
 
-    
+
+def initilize_with_zeros(dim):
+    w = np.zeros((dim,1))
+    b = 0
+    return w,b
+
