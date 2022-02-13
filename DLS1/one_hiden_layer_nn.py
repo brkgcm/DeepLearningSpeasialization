@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import sklearn.datasets as datasets
+import copy
 
 def layer_sizes(X, Y, hidden_layer_size = 4):
     n_x = X.shape[0]
@@ -65,5 +66,31 @@ def backward_propagation(parameters, cache, X, Y):
 
     grads ={'dw1':dW1, 'db1':db1, 'dw2':dW2, 'db2':db2}
     return grads
+
+def update_parameters(parameters, grads, learning_rate = 0.1):
+    W1 = copy.deepcopy(parameters['W1'])
+    b1 = copy.deepcopy(parameters['b1'])
+    W2 = copy.deepcopy(parameters['W2'])
+    b2 = copy.deepcopy(parameters['b2'])
+
+    W1 = parameters['W1']
+    b1 = parameters['b1']
+    W2 = parameters['W2']
+    b2 = parameters['b2']
+
+    dW1 = grads['dw1']
+    db1 = grads['db1']
+    dW2 = grads['dw2']
+    db2 = grads['db2']
+
+    W1 = W1 - learning_rate*dW1
+    b1 = b1 - learning_rate*db1
+    W2 = W2 - learning_rate*dW2
+    b2 = b2 - learning_rate*db2
+
+    parameters = {'W1':W1, 'b1':b1, 'W2':W2, 'b2':b2}
+    return parameters
+
+
 
 
