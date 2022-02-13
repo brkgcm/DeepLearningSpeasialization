@@ -92,5 +92,20 @@ def update_parameters(parameters, grads, learning_rate = 0.1):
     return parameters
 
 
+def nn_model(X, Y, n_h, num_iteration = 10000, print_cost=False):
+    np.random.seed(3)
+    n_x, n_h, n_y = layer_sizes(X, Y, n_h)
+    parameters = initialize_parameters(n_x, n_h, n_y)
+    
+    for i in range(num_iteration):
+        A2, cache = forward_propagation(X, parameters)
+        cost = compute_cost(A2, Y)
+        grads = backward_propagation(parameters, cache, X, Y)
+        parameters = update_parameters(parameters, grads)
+        if print_cost and i % 1000 == 0:
+            print('Cost after iteration %i: %f' % (i, cost))
+    return parameters
+
+
 
 
