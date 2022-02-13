@@ -39,4 +39,11 @@ def forward_propagation(X, parameters):
     cache = {'z1':Z1, 'a1':A1, 'z2':Z2, 'a2':A2}
     return A2, cache
 
+
+def compute_cost(A2, Y):
+    m = Y.shape[1] #number of examples
+    cost = np.sum((Y*np.log(A2))+((1-Y)*np.log(1-A2)))/(-m)
+    cost = np.squeeze(np.array(cost))
+    return cost
+
     
