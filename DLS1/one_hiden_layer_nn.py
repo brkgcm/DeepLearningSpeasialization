@@ -107,5 +107,11 @@ def nn_model(X, Y, n_h, num_iteration = 10000, print_cost=False):
     return parameters
 
 
+def predict(parameters, X):
+    A2, cache = forward_propagation(X, parameters)
+    predictions = [[True if i >=0.5 else False for i in A2[0]]]
+    return predictions
+    
+
 
 
