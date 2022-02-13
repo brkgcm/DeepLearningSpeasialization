@@ -1,4 +1,5 @@
 #Necesaary imports
+from functools import cache
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -18,5 +19,24 @@ def initialize_parameters(n_x, n_h, n_y):
 
     parameters = {'W1':w1, 'b1':b1, 'W2':w2, 'b2':b2}
     return parameters
+
+def sigmoid(z):
+    return 1/(1+np.exp(-z))
+
+def forward_propagation(X, parameters):
+    #extract parameters
+    W1 = parameters['W1']
+    b1 = parameters['b1']
+    W2 = parameters['W2']
+    b2 = parameters['b2']
+
+    #forward propagation
+    Z1 = np.dot(W1, X) + b1
+    A1 = np. tanh(Z1)
+    Z2 = np.dot(W2, A1) + b2
+    A2 = sigmoid(Z2)
+
+    cache = {'z1':Z1, 'a1':A1, 'z2':Z2, 'a2':A2}
+    return A2, cache
 
     
