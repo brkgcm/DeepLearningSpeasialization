@@ -136,5 +136,11 @@ def L_model_backward(AL, Y, caches):
     
     return grads
 
+# update parameters
+def update_parameters(parameters, grads, learning_rate):
+    L = len(parameters) // 2 # number of layers in the neural network
+    for l in range(L):
+        parameters['W'+str(l+1)] =parameters['W'+str(l+1)] - grads['dW' + str(l+1)]*learning_rate
+        parameters['b'+str(l+1)] =parameters['b'+str(l+1)] - grads['db' + str(l+1)]*learning_rate
+    return parameters
 
-    
