@@ -61,7 +61,13 @@ def L_model_forward(X, parameters):
     return AL, caches
 
 
-    
+# cross-entropy cost
+def compute_cost(AL, Y):
+    m = Y.shape[1]
+    cost = -np.sum(Y*np.log(AL)+(1-Y)*np.log(1-AL))/m
+    cost = np.squeeze(np.array(cost))
+    return cost
+
 
 
 
