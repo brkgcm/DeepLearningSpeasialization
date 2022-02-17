@@ -4,11 +4,11 @@ import numpy as np
 
 #sigmoid functuion
 def sigmoid(z):
-    return 1/(1+np.exp(-z)), z
+    return 1/(1+np.exp(-z)), (z)
 
 #relu function
 def relu(z):
-    return np.maximum(0, z), z
+    return np.maximum(0, z), (z)
 
 #Create and itialize the parameters
 def initialize_parameters(layer_dims):
@@ -18,7 +18,7 @@ def initialize_parameters(layer_dims):
 
     for l in range(1, L):
 
-        parameters['W' + str(l)] = np.random.randn{layer_dims[l], layer_dims[l-1]} * 0.01
+        parameters['W' + str(l)] = np.random.randn(layer_dims[l], layer_dims[l-1]) * 0.01
         parameters['b' + str(l)] = np.zeros((layer_dims[l], 1))
 
         assert(parameters['W' + str(l)].shape == (layer_dims[l], layer_dims[l - 1]))
@@ -100,10 +100,10 @@ def linear_backward(dZ, cache):
 # backward propagation activation->linear
 def linear_activation_backward(dA, cache, activation):
     linear_cache, activation_cache = cache
-    if activation = 'relu':
+    if activation == 'relu':
         dZ = relu_backward(dA, cache)
         dA_prev, dW, db =  linear_backward(dZ, cache)
-    if activation = 'sigmoid':
+    if activation == 'sigmoid':
         dZ = sigmoid_backward(dA, cache)
         dA_prev, dW, db = linear_backward(dZ, cache)
     return dA_prev, dW, db
@@ -144,3 +144,22 @@ def update_parameters(parameters, grads, learning_rate):
         parameters['b'+str(l+1)] =parameters['b'+str(l+1)] - grads['db' + str(l+1)]*learning_rate
     return parameters
 
+
+# l layer model
+def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 3000, print_cost = False):
+    np.random.seed(1)
+    costs = []
+    parameters = initialize_parameters(layers_dims)
+
+    for i in range(num_iterations):
+        AL, caches = L_model_forward(X, parameters)
+        cost = compute_cost(AL, Y)
+        grads = L_model_backward(AL, Y, caches)
+        parameters = update_parameters(parameters, grads, learning_rate)
+
+        if print_cost and i % 100 == 0 or i == num_iterations - 1:
+            print("Cost after iteration {}: {}".format(i, np.squeeze(cost)))
+        if i % 100 == 0 or i == num_iterations:
+            costs.append(cost)
+    
+    return parameters, costs
