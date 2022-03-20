@@ -4,12 +4,12 @@ import numpy as np
 
 # sigmoid functuion
 def sigmoid(z):
-    return 1 / (1 + np.exp(-z)), (z)
+    return 1 / (1 + np.exp(-z)), z
 
 
 # relu function
 def relu(z):
-    return np.maximum(0, z), (z)
+    return np.maximum(0, z), z
 
 
 # Create and itialize the parameters
@@ -70,6 +70,7 @@ def L_model_forward(X, parameters):
 
 # cross-entropy cost
 def compute_cost(AL, Y):
+    Y = Y.reshape(AL.shape)
     m = Y.shape[1]
     cost = -np.sum(Y * np.log(AL) + (1 - Y) * np.log(1 - AL)) / m
     cost = np.squeeze(np.array(cost))
@@ -108,11 +109,11 @@ def linear_backward(dZ, cache):
 def linear_activation_backward(dA, cache, activation):
     linear_cache, activation_cache = cache
     if activation == "relu":
-        dZ = relu_backward(dA, cache)
-        dA_prev, dW, db = linear_backward(dZ, cache)
+        dZ = relu_backward(dA, activation_cache)
+        dA_prev, dW, db = linear_backward(dZ, linear_cache)
     if activation == "sigmoid":
-        dZ = sigmoid_backward(dA, cache)
-        dA_prev, dW, db = linear_backward(dZ, cache)
+        dZ = sigmoid_backward(dA, activation_cache)
+        dA_prev, dW, db = linear_backward(dZ, linear_cache)
     return dA_prev, dW, db
 
 
