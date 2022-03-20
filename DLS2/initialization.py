@@ -30,7 +30,7 @@ def initialize_parameters_he(layers_dims):
         parameters['b' + str(i)] = np.zeros((layers_dims[i], 1))
     return parameters
 
-def model(X, Y, layers_dims, learning_rate=0.0075, num_iterations=3000, print_cost=False, initialization="he"):
+def model(X, Y, layers_dims, learning_rate=0.01, num_iterations=3000, print_cost=False, initialization="he"):
     if initialization == "zeros":
         parameters = initialize_parameters_zeros(layers_dims)
     elif initialization == "random":
@@ -76,4 +76,4 @@ X = X.T
 
 layers_dims = [X.shape[0], 5, 2, 1]
 
-parameters = model(X, y, layers_dims, num_iterations=10000, print_cost=True)
+parameters = model(X, y, layers_dims, num_iterations=10000, print_cost=True, initialization="he", learning_rate=0.1)
