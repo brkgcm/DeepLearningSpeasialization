@@ -1,35 +1,32 @@
 # Import  the required libraries    
-import numpy as np  
-import matplotlib.pyplot as plt
-import pandas as pd
-import scipy
+import numpy as np
 import copy
-from PIL import Image
-from scipy import ndimage
+
 
 def sigmoid(z):
-    return 1/(1+np.exp(-z))
+    return 1 / (1 + np.exp(-z))
 
 
 def initilize_with_zeros(dim):
-    w = np.zeros((dim,1))
+    w = np.zeros((dim, 1))
     b = 0
-    return w,b
+    return w, b
+
 
 # Forward and backward propagation
 def propagate(w, b, X, Y):
-    #Forward Propagation
+    # Forward Propagation
     m = X.shape[1]
-    A = sigmoid(np.dot(w.T,X)+b)
-    cost = np.sum((Y*np.log(A))+((1-Y)*np.log(1-A)))/(-m)
+    A = sigmoid(np.dot(w.T, X) + b)
+    cost = np.sum((Y * np.log(A)) + ((1 - Y) * np.log(1 - A))) / (-m)
 
-    #Backward Propagation
-    dw = np.dot(X, (A-Y).T)/m
-    db = np.sum(A-Y)/m
+    # Backward Propagation
+    dw = np.dot(X, (A - Y).T) / m
+    db = np.sum(A - Y) / m
 
     cost = np.squeeze(np.array(cost))
 
-    grads = {'dw':dw, 'db':db}
+    grads = {'dw': dw, 'db': db}
 
     return grads, cost
 
@@ -45,20 +42,18 @@ def optimize(w, b, X, Y, num_iteration=100, learning_rate=0.0009, print_cost=Fal
         dw = grads['dw']
         db = grads['db']
         # Update rule
-        w = w - learning_rate*dw
-        b = b - learning_rate*db
+        w = w - learning_rate * dw
+        b = b - learning_rate * db
         # Record the costs
         if i % 100 == 0:
-            cost.append(cost)
+            costs.append(cost)
         if print_cost:
-            print('Cost after iteration %i: %f' %(i, cost))
-        
+            print('Cost after iteration %i: %f' % (i, cost))
 
-    params = {'w':w, 'b':b}
-    grads = {'dw':dw, 'db':db}
+    params = {'w': w, 'b': b}
+    grads = {'dw': dw, 'db': db}
 
     return params, grads, costs
-
 
 
 def predict(w, b, X):
@@ -69,9 +64,11 @@ def predict(w, b, X):
     A = sigmoid(np.dot(w.T, X) + b)
 
     for i in range(A.shape[1]):
-        if A[0, i] > 0.5: Y_prediction[0, i] = 1
-        else: Y_prediction[0, i] = 0
-    
+        if A[0, i] > 0.5:
+            Y_prediction[0, i] = 1
+        else:
+            Y_prediction[0, i] = 0
+
     return Y_prediction
 
 
@@ -86,17 +83,15 @@ def model(X_train, Y_train, X_test, Y_test, num_iteration=2000, learning_rate=0.
     Y_prediction_train = predict(w, b, X_train)
 
     if print_cost:
-         print("train accuracy: {} %".format(100 - np.mean(np.abs(Y_prediction_train - Y_train)) * 100))
-         print("test accuracy: {} %".format(100 - np.mean(np.abs(Y_prediction_test - Y_test)) * 100))
+        print("train accuracy: {} %".format(100 - np.mean(np.abs(Y_prediction_train - Y_train)) * 100))
+        print("test accuracy: {} %".format(100 - np.mean(np.abs(Y_prediction_test - Y_test)) * 100))
 
     d = {"costs": costs,
-         "Y_prediction_test": Y_prediction_test, 
-         "Y_prediction_train" : Y_prediction_train, 
-         "w" : w, 
-         "b" : b,
-         "learning_rate" : learning_rate,
+         "Y_prediction_test": Y_prediction_test,
+         "Y_prediction_train": Y_prediction_train,
+         "w": w,
+         "b": b,
+         "learning_rate": learning_rate,
          "num_iterations": num_iteration}
-    
-    return d
 
-   
+    return d
